@@ -2,6 +2,8 @@
 
 Add your own code here, not in tools.py. Keeping them separate means you can
 `git pull` our updates all semester without conflicts.
+
+Test code
 """
 
 import numpy as np
