@@ -30,7 +30,7 @@ marker_deck_ids = [51, 52, 53, 54]
 # -- MAY CHANGE FROM FLIGHT TO FLIGHT --
 
 # Specify whether or not to use the motion capture system
-use_mocap = False
+use_mocap = True
 
 # Specify whether or not to use a custom controller
 use_controller = True
@@ -139,20 +139,36 @@ try:
     # harm, so the same flight code works for both.
     drone_client.arm()
 
-    # Pause before takeoff
-    drone_client.stop(3.0)
+    # Graceful takeoff
+    drone_client.move(0.0, 0.0, 0.2, 0.0, 1.0)
+    drone_client.move_smooth([0., 0., 0.2], [0., 0., 0.5], 0.0, 0.20)
+    drone_client.move(0.0, 0.0, 0.5, 0.0, 0.5)
 
-    #graceful accent
-    drone_client.move(0.0, 0.0, 0.2, 0.0, 1.0)  # take off and hover at a height of 0.1 meters
-    #drone_client.move(0.0, 0.0, 0.3, 0.0, 1.0)  # take off and hover at a height of 0.3 meters
-    drone_client.move(0.0, 0.0, 0.5, 0.0, 10.0)  # take off and hover at a height of 0.5 meters
-    #graceful decent
-    drone_client.move(0.0, 0.0, 0.3, 0.0, 2.0)  # take off and hover at a height of 0.3 meters
-    drone_client.move(0.0, 0.0, 0.2, 0.0, 2.0)  # take off and hover at a height of 0.2 meters
-    drone_client.move(0.0, 0.0, 0.1, 0.0, 2.0)  # take off and hover at a height of 0.1 meters
+    # Move in a square
+    drone_client.move_smooth([0.0, 0.0, 0.5], [0.5, 0.0, 0.5], 0.0, 0.20)
+    drone_client.move_smooth([0.5, 0.0, 0.5], [0.5, 0.5, 0.5], 0.0, 0.20)
+    drone_client.move_smooth([0.5, 0.5, 0.5], [0.0, 0.5, 0.5], 0.0, 0.20)
+    drone_client.move_smooth([0.0, 0.5, 0.5], [0.0, 0.0, 0.5], 0.0, 0.20)
 
-    # Pause after landing
-    drone_client.stop(3.0)
+    # Graceful landing
+    drone_client.move(0.0, 0.0, 0.5, 0.0, 0.5)
+    drone_client.move_smooth([0., 0., 0.50], [0., 0., 0.20], 0.0, 0.20)
+    drone_client.move(0.0, 0.0, 0.20, 0.0, 1.0)
+
+    # # Pause before takeoff
+    # drone_client.stop(3.0)
+
+    # #graceful accent
+    # drone_client.move(0.0, 0.0, 0.2, 0.0, 1.0)  # take off and hover at a height of 0.1 meters
+    # drone_client.move(0.0, 0.0, 0.35, 0.0, 1.0)  # take off and hover at a height of 0.3 meters
+    # drone_client.move(0.0, 0.0, 0.5, 0.0, 10.0)  # take off and hover at a height of 0.5 meters
+    # #graceful decent
+    # drone_client.move(0.0, 0.0, 0.3, 0.0, 2.0)  # take off and hover at a height of 0.3 meters
+    # drone_client.move(0.0, 0.0, 0.2, 0.0, 2.0)  # take off and hover at a height of 0.2 meters
+    # drone_client.move(0.0, 0.0, 0.1, 0.0, 2.0)  # take off and hover at a height of 0.1 meters
+
+    # # Pause after landing
+    # drone_client.stop(3.0)
 
 except KeyboardInterrupt:
     print('\nInterrupted - stopping the motors and saving whatever data were collected.')
